@@ -21,7 +21,6 @@ public class IntroActivity extends Activity {
             public void run() {
                 Intent mainIntent = new Intent(IntroActivity.this, MainActivity.class);
 
-                startActivity(mainIntent);
                 finish();   //현재 액티비티는 종료
             }
         };
