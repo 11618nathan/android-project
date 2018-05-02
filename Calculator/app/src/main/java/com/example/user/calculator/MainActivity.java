@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        btnAdd.setOnFocusChangeListener();
         // 숫자 버튼 10개를 대입
         for (i = 0; i < numBtnIDs.length; i++) {
             numButtons[i] = (Button) findViewById(numBtnIDs[i]);
