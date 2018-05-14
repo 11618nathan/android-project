@@ -28,13 +28,14 @@ public class Intro extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        // 3초간 화면 실행
-        handler.postDelayed(r, 3000);
+        // 밀리초간 화면 실행
+        handler.postDelayed(r, 2750);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacks(r); // 예약 취소
+        // 예약 취소
+        handler.removeCallbacks(r);
     }
 }
