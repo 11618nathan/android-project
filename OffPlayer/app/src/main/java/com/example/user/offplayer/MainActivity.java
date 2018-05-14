@@ -1,8 +1,14 @@
 package com.example.user.offplayer;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,27 +32,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final static int LOADER_ID = 0x001;
+
     private RecyclerView mRecyclerView;
     private AudioAdapter mAdapter;
+
+    private ImageView mImgAlbumArt;
+    private TextView mTxtTitle;
+    private ImageButton mBtnPlayPause;
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUI();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         // Marshmallow 이상 권한 체크 -> 안드로이드 저장소 사용
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
             } else {
-                // READ_EXTERNAL_STORAGE 에 대한 권한이 있음.
+                // READ_EXTERNAL_STORAGE 권한
                 getAudioListFromMediaDatabase();
             }
         }
@@ -62,6 +85,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
+        mTxtTitle = (TextView) findViewById(R.id.txt_title);
+        mBtnPlayPause = (ImageButton) findViewById(R.id.btn_play_pause);
+        findViewById(R.id.lin_miniplayer).setOnClickListener(this);
+        findViewById(R.id.btn_rewind).setOnClickListener(this);
+        mBtnPlayPause.setOnClickListener(this);
+        findViewById(R.id.btn_forward).setOnClickListener(this);
+
+        registerBroadcast();
+        updateUI();
+
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setAction("Action", null).show();
             }
         });
+        */
 
+        // 네비게이션
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -81,11 +118,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void registerBroadcast() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(AudioService.BroadcastActions.PREPARED);
+        filter.addAction(AudioService.BroadcastActions.PLAY_STATE_CHANGED);
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    public void unregisterBroadcast(){
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+    private void updateUI() {
+        if (AudioApplication.getInstance().getServiceInterface().isPlaying()) {
+            mBtnPlayPause.setImageResource(R.drawable.pause);
+        } else {
+            mBtnPlayPause.setImageResource(R.drawable.play);
+        }
+        AudioAdapter.AudioItem audioItem = AudioApplication.getInstance().getServiceInterface().getAudioItem();
+        if (audioItem != null) {
+            Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), audioItem.mAlbumId);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
+            mTxtTitle.setText(audioItem.mTitle);
+        } else {
+            mImgAlbumArt.setImageResource(R.drawable.intro);
+            mTxtTitle.setText("재생중인 음악이 없습니다.");
+        }
+    }
 
     private void getAudioListFromMediaDatabase() {
         getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
-            public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 String[] projection = new String[]{
                         MediaStore.Audio.Media._ID,
@@ -98,22 +162,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 };
                 String selection = MediaStore.Audio.Media.IS_MUSIC + " = 1";
                 String sortOrder = MediaStore.Audio.Media.TITLE + " COLLATE LOCALIZED ASC";
-                return new android.support.v4.content.CursorLoader(getApplicationContext(), uri, projection, selection, null, sortOrder);
+                return new CursorLoader(getApplicationContext(), uri, projection, selection, null, sortOrder);
             }
 
             @Override
-            public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
                 mAdapter.swapCursor(data);
             }
 
             @Override
-            public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+            public void onLoaderReset(Loader<Cursor> loader) {
                 mAdapter.swapCursor(null);
             }
-
         });
     }
-
 
     // 안드로이드 저장소 사용
     @Override
@@ -125,6 +187,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.lin_miniplayer:
+                // 플레이어 화면으로 이동할 코드가 들어갈 예정
+                break;
+            case R.id.btn_rewind:
+                // 이전곡으로 이동
+                AudioApplication.getInstance().getServiceInterface().rewind();
+                break;
+            case R.id.btn_play_pause:
+                // 재생 또는 일시정지
+                AudioApplication.getInstance().getServiceInterface().togglePlay();
+                break;
+            case R.id.btn_forward:
+                // 다음곡으로 이동
+                AudioApplication.getInstance().getServiceInterface().forward();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterBroadcast();
+    }
 
     @Override
     public void onBackPressed() {
