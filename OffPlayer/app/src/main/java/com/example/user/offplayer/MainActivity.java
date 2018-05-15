@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AudioAdapter mAdapter;
 
     private ImageView mImgAlbumArt;
+
     private TextView mTxtTitle;
     private ImageButton mBtnPlayPause;
 
