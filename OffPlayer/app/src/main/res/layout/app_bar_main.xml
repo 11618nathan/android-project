@@ -25,7 +25,7 @@
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="262dp"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 android:src="@drawable/intro"
