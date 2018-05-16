@@ -23,7 +23,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/appImage"
                 android:layout_width="match_parent"
                 android:layout_height="262dp"
                 android:scaleType="centerCrop"
