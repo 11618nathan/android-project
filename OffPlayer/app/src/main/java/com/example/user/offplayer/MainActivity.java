@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView mTxtTitle;
     private ImageButton mBtnPlayPause;
 
-    // 가져오기
+    // UI 가져오기
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Marshmallow 이상 권한 체크 -> 안드로이드 저장소 사용
+        // 안드로이드 저장소 사용 - Marshmallow 이상 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
@@ -147,8 +147,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Android Media Database - Query
     private void getAudioListFromMediaDatabase() {
         getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+
+            // Database 조회
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -161,15 +164,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         MediaStore.Audio.Media.DURATION,
                         MediaStore.Audio.Media.DATA
                 };
+                // 조건문
                 String selection = MediaStore.Audio.Media.IS_MUSIC + " = 1";
+                //
                 String sortOrder = MediaStore.Audio.Media.TITLE + " COLLATE LOCALIZED ASC";
                 return new CursorLoader(getApplicationContext(), uri, projection, selection, null, sortOrder);
             }
 
+            // 조회 리턴
             @Override
-            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                mAdapter.swapCursor(data);
-            }
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) { mAdapter.swapCursor(data); }
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
