@@ -12,6 +12,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +46,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView mRecyclerView;
     private AudioAdapter mAdapter;
 
+    private SeekBar seekbar;
+    private Handler myHandler = new Handler();;
+
     private ImageView mImgAlbumArt;
+    private ImageView appImage;
 
     private TextView mTxtTitle;
     private ImageButton mBtnPlayPause;
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getAudioListFromMediaDatabase();
         }
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mAdapter = new AudioAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
@@ -86,7 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        seekbar = (SeekBar)findViewById(R.id.seekBar);
+        seekbar.setClickable(false);
+
         mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
+        appImage = (ImageView) findViewById(R.id.appImage);
+
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
         mBtnPlayPause = (ImageButton) findViewById(R.id.btn_play_pause);
         findViewById(R.id.lin_miniplayer).setOnClickListener(this);
@@ -96,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         registerBroadcast();
         updateUI();
+
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -140,7 +153,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (audioItem != null) {
             Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), audioItem.mAlbumId);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
             mTxtTitle.setText(audioItem.mTitle);
+
+            //imageView1.setImageURI(mImgAlbumArt);
         } else {
             mImgAlbumArt.setImageResource(R.drawable.intro);
             mTxtTitle.setText("재생중인 음악이 없습니다.");
@@ -218,6 +234,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
         unregisterBroadcast();
     }
+
+    protected void initializeSeekBar(){
+        /*
+        seekbar.setMax(mPlayer.getDuration()/1000);
+
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if(mPlayer!=null){
+                    int mCurrentPosition = mPlayer.getCurrentPosition()/1000; // In milliseconds
+                    mSeekBar.setProgress(mCurrentPosition);
+                    getAudioStats();
+                }
+                mHandler.postDelayed(mRunnable,1000);
+            }
+        };
+        mHandler.postDelayed(mRunnable,1000);
+        */
+    }
+
+
 
     @Override
     public void onBackPressed() {
