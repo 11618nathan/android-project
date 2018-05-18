@@ -8,14 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -46,14 +45,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView mRecyclerView;
     private AudioAdapter mAdapter;
 
-    private SeekBar seekbar;
-    private Handler myHandler = new Handler();;
+    /*
+    private MediaPlayer mediaPlayer;
+    */
 
     private ImageView mImgAlbumArt;
     private ImageView appImage;
 
     private TextView mTxtTitle;
     private ImageButton mBtnPlayPause;
+
+
+    // 음악 재생 바
+    private SeekBar seekbar;
+    private Handler myHandler = new Handler();
+    boolean isPlaying = false;
+
+    /*
+    private Runnable mRunnable;
+    private Handler mHandler;
+    */
 
     // UI 가져오기
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -63,6 +74,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
+
+    /*
+    class MyThread extends Thread {
+        @Override
+        public void run() { // 쓰레드가 시작되면 콜백되는 메서드
+            // 씨크바 막대기 조금씩 움직이기 (노래 끝날 때까지 반복)
+            while(AudioApplication.getInstance().getServiceInterface().isPlaying()) {
+                seekbar.setProgress(mediaPlayer.getCurrentPosition());
+            }
+        }
+    }
+    */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         // 안드로이드 저장소 사용 - Marshmallow 이상 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -85,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getAudioListFromMediaDatabase();
         }
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mAdapter = new AudioAdapter(this, null);
         mRecyclerView.setAdapter(mAdapter);
@@ -93,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        seekbar = (SeekBar)findViewById(R.id.seekBar);
-        seekbar.setClickable(false);
 
         mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
         appImage = (ImageView) findViewById(R.id.appImage);
@@ -107,7 +130,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.btn_forward).setOnClickListener(this);
 
         registerBroadcast();
+
         updateUI();
+
+        /*
+        seekbar = (SeekBar)findViewById(R.id.seekBar);
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isPlaying= true;
+                int ttt = seekBar.getProgress(); // 사용자가 움직여놓은 위치
+                mediaPlayer.seekTo(ttt);
+                mediaPlayer.start();
+                new MyThread().start();
+            }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isPlaying = false;
+                mediaPlayer.pause();
+            }
+            public void onProgressChanged(SeekBar seekBar,int progress,boolean fromUser) {
+                if (seekBar.getMax()==progress) {
+                    isPlaying = false;
+                    mediaPlayer.stop();
+                }
+            }
+        });
+        */
 
 
         /*
@@ -166,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Android Media Database - Query
     private void getAudioListFromMediaDatabase() {
         getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-
             // Database 조회
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -212,18 +258,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.lin_miniplayer:
-                // 플레이어 화면으로 이동할 코드가 들어갈 예정
+                // 플레이어 화면 이동
                 break;
             case R.id.btn_rewind:
-                // 이전곡으로 이동
+                // 이전 곡 이동
                 AudioApplication.getInstance().getServiceInterface().rewind();
                 break;
             case R.id.btn_play_pause:
-                // 재생 또는 일시정지
+                // 재생 일시정지
                 AudioApplication.getInstance().getServiceInterface().togglePlay();
                 break;
             case R.id.btn_forward:
-                // 다음곡으로 이동
+                // 다음 곡 이동
                 AudioApplication.getInstance().getServiceInterface().forward();
                 break;
         }
@@ -234,26 +280,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
         unregisterBroadcast();
     }
-
-    protected void initializeSeekBar(){
-        /*
-        seekbar.setMax(mPlayer.getDuration()/1000);
-
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if(mPlayer!=null){
-                    int mCurrentPosition = mPlayer.getCurrentPosition()/1000; // In milliseconds
-                    mSeekBar.setProgress(mCurrentPosition);
-                    getAudioStats();
-                }
-                mHandler.postDelayed(mRunnable,1000);
-            }
-        };
-        mHandler.postDelayed(mRunnable,1000);
-        */
-    }
-
 
 
     @Override
