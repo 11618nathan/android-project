@@ -8,9 +8,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.MediaStore;
+import android.widget.SeekBar;
+
 import java.util.ArrayList;
 
 public class AudioService extends Service {
@@ -21,6 +24,7 @@ public class AudioService extends Service {
     private int mCurrentPosition;
     private AudioAdapter.AudioItem mAudioItem;
     private NotificationPlayer mNotificationPlayer;
+
 
     public class AudioServiceBinder extends Binder {
         AudioService getService() {
