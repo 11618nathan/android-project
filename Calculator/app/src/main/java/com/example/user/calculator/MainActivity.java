@@ -1,6 +1,7 @@
 package com.example.user.calculator;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        btnAdd.setOnFocusChangeListener();
+
         // 숫자 버튼 10개를 대입
         for (i = 0; i < numBtnIDs.length; i++) {
             numButtons[i] = (Button) findViewById(numBtnIDs[i]);
