@@ -25,6 +25,9 @@ public class AudioService extends Service {
     private AudioAdapter.AudioItem mAudioItem;
     private NotificationPlayer mNotificationPlayer;
 
+    /*
+    private SeekBar seekBar;
+    */
 
     public class AudioServiceBinder extends Binder {
         AudioService getService() {
