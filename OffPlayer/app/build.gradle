@@ -29,8 +29,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // RecyclerView 사용 Support Library 추가
-    compile 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
     // 앨범 아트 ImageView 적용
-    compile files('libs/picasso-2.5.2.jar')
+    api files('libs/picasso-2.5.2.jar')
 }
