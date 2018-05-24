@@ -53,14 +53,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView appImage;
 
     private TextView mTxtTitle;
+/*
+    private TextView mTxtTitle2;
+*/
     private ImageButton mBtnPlayPause;
 
 
+    /*
     // 음악 재생 바
     private SeekBar seekbar;
     private Handler myHandler = new Handler();
     boolean isPlaying = false;
-
+    */
     /*
     private Runnable mRunnable;
     private Handler mHandler;
@@ -123,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appImage = (ImageView) findViewById(R.id.appImage);
 
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
+        /*
+        mTxtTitle2 = (TextView) findViewById(R.id.txt_title2);
+        */
         mBtnPlayPause = (ImageButton) findViewById(R.id.btn_play_pause);
         findViewById(R.id.lin_miniplayer).setOnClickListener(this);
         findViewById(R.id.btn_rewind).setOnClickListener(this);
@@ -202,11 +209,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
             mTxtTitle.setText(audioItem.mTitle);
-
+            /*
+            mTxtTitle2.setText(audioItem.mTitle);
+            */
             //imageView1.setImageURI(mImgAlbumArt);
         } else {
             mImgAlbumArt.setImageResource(R.drawable.intro);
             mTxtTitle.setText("재생중인 음악이 없습니다.");
+/*
+            mTxtTitle2.setText("재생중인 음악이 없습니다. ");
+*/
         }
     }
 
