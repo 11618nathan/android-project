@@ -3,20 +3,15 @@ package com.example.user.offplayer;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.AsyncTaskLoader;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.NotificationManagerCompat;
-import android.widget.RemoteViews;
-import android.widget.RemoteViews.RemoteView;
 import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
+
 import com.squareup.picasso.Picasso;
-import android.app.Notification.MediaStyle;
-import java.io.IOException;
 
 public class NotificationPlayer {
     private final static int NOTIFICATION_PLAYER_ID = 0x342;
@@ -78,7 +73,7 @@ public class NotificationPlayer {
             notification.contentIntent = mMainPendingIntent;
             if (!isForeground) {
                 isForeground = true;
-                // 서비스 Foreground 상태
+                // 서비스를 Foreground 상태로 만든다
                 mService.startForeground(NOTIFICATION_PLAYER_ID, notification);
             }
         }
