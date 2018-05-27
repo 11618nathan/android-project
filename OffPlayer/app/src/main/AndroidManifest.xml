@@ -43,6 +43,21 @@
             </intent-filter>
         </activity>
 
+        <!--
+        <receiver
+            android:name=".MyAppWidgetProvider"
+            android:label="4x1 Widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="PREPARED"/>
+                <action android:name="PLAY_STATE_CHANGED"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_4x1"/>
+        </receiver>
+        -->
 
 
     </application>
