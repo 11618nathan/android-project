@@ -1,10 +1,24 @@
-/*public class MyAppWidgetProvider extends AppWidgetProvider {
+package com.example.user.offplayer;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.widget.RemoteViews;
+
+import com.squareup.picasso.Picasso;
+
+public class MyAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.appwidget);
-        if (BroadcastActions.PREPARED.equals(action)) {
+        if (AudioService.BroadcastActions.PREPARED.equals(action)) {
             updateAlbumArt(context, remoteViews); // 재생음악 파일이 변경된 경우.
         }
         updatePlayState(context, remoteViews); // 재생상태 업데이트.
@@ -37,9 +51,9 @@
         remoteViews.setTextViewText(R.id.txt_title, title);
 
         Intent actionLaunch = new Intent(context, MainActivity.class);
-        Intent actionTogglePlay = new Intent(CommandActions.TOGGLE_PLAY);
-        Intent actionForward = new Intent(CommandActions.FORWARD);
-        Intent actionRewind = new Intent(CommandActions.REWIND);
+        Intent actionTogglePlay = new Intent(NotificationPlayer.CommandActions.TOGGLE_PLAY);
+        Intent actionForward = new Intent(NotificationPlayer.CommandActions.FORWARD);
+        Intent actionRewind = new Intent(NotificationPlayer.CommandActions.REWIND);
 
         PendingIntent launch = PendingIntent.getActivity(context, 0, actionLaunch, 0);
         PendingIntent togglePlay = PendingIntent.getService(context, 0, actionTogglePlay, 0);
@@ -60,4 +74,3 @@
         }
     }
 }
-*/
