@@ -12,13 +12,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +29,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -45,22 +42,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView mRecyclerView;
     private AudioAdapter mAdapter;
 
-    /*
-    private MediaPlayer mediaPlayer;
-    */
 
     private ImageView mImgAlbumArt;
     private ImageView appImage;
 
     private TextView mTxtTitle;
 /*
+backgrond erorr
     private TextView mTxtTitle2;
 */
     private ImageButton mBtnPlayPause;
 
 
     /*
-    // 음악 재생 바
+    // 음악 재생 바 - MediaPlayer 오류
+
     private SeekBar seekbar;
     private Handler myHandler = new Handler();
     boolean isPlaying = false;
@@ -70,6 +66,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Handler mHandler;
     */
 
+    private SeekBar seekBar;
+    private MediaPlayer mMediaPlayer;
+
+
+    // Seekbar 이동
+    class MyThread extends Thread {
+        @Override
+        public void run() { // 쓰레드가 시작되면 콜백되는 메서드
+            // 씨크바 막대기 조금씩 움직이기 (노래 끝날 때까지 반복)
+            while(AudioApplication.getInstance().getServiceInterface().isPlaying()) {
+                seekBar.setProgress(mMediaPlayer.getCurrentPosition());
+            }
+        }
+    }
+
     // UI 가져오기
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -77,19 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             updateUI();
         }
     };
-
-
-    /*
-    class MyThread extends Thread {
-        @Override
-        public void run() { // 쓰레드가 시작되면 콜백되는 메서드
-            // 씨크바 막대기 조금씩 움직이기 (노래 끝날 때까지 반복)
-            while(AudioApplication.getInstance().getServiceInterface().isPlaying()) {
-                seekbar.setProgress(mediaPlayer.getCurrentPosition());
-            }
-        }
-    }
-    */
 
 
     @Override
@@ -140,40 +138,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         updateUI();
 
-        /*
-        seekbar = (SeekBar)findViewById(R.id.seekBar);
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                isPlaying= true;
-                int ttt = seekBar.getProgress(); // 사용자가 움직여놓은 위치
-                mediaPlayer.seekTo(ttt);
-                mediaPlayer.start();
-                new MyThread().start();
-            }
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                isPlaying = false;
-                mediaPlayer.pause();
-            }
-            public void onProgressChanged(SeekBar seekBar,int progress,boolean fromUser) {
-                if (seekBar.getMax()==progress) {
-                    isPlaying = false;
-                    mediaPlayer.stop();
-                }
-            }
-        });
-        */
-
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
 
         // 네비게이션
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
