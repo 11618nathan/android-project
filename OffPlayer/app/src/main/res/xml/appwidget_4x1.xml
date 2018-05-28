@@ -1,7 +1,7 @@
 <appwidget-provider
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/appwidget"
-    android:minHeight="40dp"
+    android:minHeight="41dp"
     android:minWidth="294dp"/>
 
     <!-- android:minHeight 최소 높이 -->
