@@ -60,6 +60,7 @@
         -->
 
 
+        <receiver android:name=".MyAppWidgetProvider" />
     </application>
 
 </manifest>
