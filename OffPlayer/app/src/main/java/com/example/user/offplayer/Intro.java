@@ -29,7 +29,7 @@ public class Intro extends Activity{
     protected void onResume() {
         super.onResume();
         // 밀리초간 화면 실행
-        handler.postDelayed(r, 2250);
+        handler.postDelayed(r, 1800);
     }
 
     @Override
