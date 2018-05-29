@@ -33,4 +33,5 @@ dependencies {
 
     // 앨범 아트 ImageView 적용
     api files('libs/picasso-2.5.2.jar')
+
 }
