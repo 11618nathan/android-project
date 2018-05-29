@@ -26,9 +26,6 @@ public class AudioService extends Service {
     private NotificationPlayer mNotificationPlayer;
 
 
-    private SeekBar seekBar;
-
-
     public class AudioServiceBinder extends Binder {
         AudioService getService() {
             return AudioService.this;
@@ -73,6 +70,8 @@ public class AudioService extends Service {
             }
         });
         mNotificationPlayer = new NotificationPlayer(this);
+
+        // isPlaying() 오류 및 Viewfindlwy 오류
     }
 
     @Override
