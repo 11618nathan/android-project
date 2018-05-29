@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ImageView mImgAlbumArt;
     private ImageView appImage;
+    private ImageView nav_img;
 
     private TextView mTxtTitle;
 /*
@@ -94,6 +95,7 @@ backgrond erorr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setContentView(R.layout.nav_header_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,6 +125,7 @@ backgrond erorr
 
         mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
         appImage = (ImageView) findViewById(R.id.appImage);
+        nav_img = (ImageView) findViewById(R.id.nav_img);
 
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
         /*
@@ -172,6 +175,7 @@ backgrond erorr
             Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), audioItem.mAlbumId);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(nav_img);
             mTxtTitle.setText(audioItem.mTitle);
             /*
             mTxtTitle2.setText(audioItem.mTitle);
