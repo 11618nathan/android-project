@@ -20,10 +20,17 @@ public class AudioService extends Service {
     private final IBinder mBinder = new AudioServiceBinder();
     private ArrayList<Long> mAudioIds = new ArrayList<>();
     private MediaPlayer mMediaPlayer;
+
+    // 재생 위치
     private boolean isPrepared;
+
+    // 재생 멈춘 시점
     private int mCurrentPosition;
     private AudioAdapter.AudioItem mAudioItem;
     private NotificationPlayer mNotificationPlayer;
+
+    /*음악 재생 위치 seekbar*/
+    private SeekBar seekBar;
 
 
     public class AudioServiceBinder extends Binder {
