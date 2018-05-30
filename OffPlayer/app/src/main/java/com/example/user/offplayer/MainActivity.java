@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AudioAdapter mAdapter;
 
 
+    // 이미지
     private ImageView mImgAlbumArt;
     private ImageView appImage;
     private ImageView nav_img;
@@ -61,11 +63,9 @@ backgrond erorr
     private SeekBar seekbar;
     private Handler myHandler = new Handler();
     boolean isPlaying = false;
-    */
-    /*
+
     private Runnable mRunnable;
     private Handler mHandler;
-    */
 
     private SeekBar seekBar;
     private MediaPlayer mMediaPlayer;
@@ -81,7 +81,7 @@ backgrond erorr
             }
         }
     }
-
+*/
     // UI 가져오기
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -95,7 +95,6 @@ backgrond erorr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.nav_header_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +126,7 @@ backgrond erorr
         appImage = (ImageView) findViewById(R.id.appImage);
         nav_img = (ImageView) findViewById(R.id.nav_img);
 
+
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
         /*
         mTxtTitle2 = (TextView) findViewById(R.id.txt_title2);
@@ -148,7 +148,6 @@ backgrond erorr
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -176,6 +175,7 @@ backgrond erorr
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(nav_img);
+
             mTxtTitle.setText(audioItem.mTitle);
             /*
             mTxtTitle2.setText(audioItem.mTitle);
