@@ -14,6 +14,9 @@ import android.widget.RemoteViews;
 import com.squareup.picasso.Picasso;
 
 public class NotificationPlayer {
+
+    // AudioService
+
     private final static int NOTIFICATION_PLAYER_ID = 0x342;
     private AudioService mService;
     private NotificationManager mNotificationManager;
@@ -126,7 +129,7 @@ public class NotificationPlayer {
             String title = mService.getAudioItem().mTitle;
             remoteViews.setTextViewText(R.id.txt_title, title);
             Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), mService.getAudioItem().mAlbumId);
-            Picasso.with(mService).load(albumArtUri).error(R.drawable.intro).into(remoteViews, R.id.img_albumart, NOTIFICATION_PLAYER_ID, notification);
+            Picasso.with(mService).load(albumArtUri).error(R.mipmap.ic_launcher).into(remoteViews, R.id.img_albumart, NOTIFICATION_PLAYER_ID, notification);
         }
     }
 }
