@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.widget.SeekBar;
-
 import java.util.ArrayList;
 
 public class AudioService extends Service {
@@ -32,6 +31,16 @@ public class AudioService extends Service {
     /*음악 재생 위치 seekbar*/
     private SeekBar seekBar;
 
+    /*
+    class myThread extends Thread {
+        @Override
+        public void run() {
+            while (AudioApplication.getInstance().getServiceInterface().isPlaying()) {
+                seekBar.setProgress(mMediaPlayer.getCurrentPosition());
+            }
+        }
+    }
+    */
 
     public class AudioServiceBinder extends Binder {
         AudioService getService() {
@@ -77,8 +86,30 @@ public class AudioService extends Service {
             }
         });
         mNotificationPlayer = new NotificationPlayer(this);
+        /*
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (seekBar.getMax() == progress) {
+                    isPrepared = false;
+                    mMediaPlayer.stop();
+                }
+            }
 
-        // isPlaying() 오류 및 Viewfindlwy 오류
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isPrepared = false;
+                mMediaPlayer.pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isPrepared = true;
+                int mMove = seekBar.getProgress();
+                mMediaPlayer.seekTo(mMove);
+                mMediaPlayer.start();
+            }
+        });*/
     }
 
     @Override
