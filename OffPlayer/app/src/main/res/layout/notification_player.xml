@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/intro"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/txt_title"
@@ -48,6 +48,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@null"
-        android:src="@drawable/close"/>
+        android:src="@drawable/ic_close"/>
 
 </LinearLayout>
