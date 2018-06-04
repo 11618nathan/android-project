@@ -8,19 +8,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,8 +32,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -47,8 +48,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // 이미지
     private ImageView mImgAlbumArt;
     private ImageView appImage;
+    /*
     private ImageView nav_img;
-
+*/
     private TextView mTxtTitle;
 /*
 backgrond erorr
@@ -56,7 +58,10 @@ backgrond erorr
 */
     private ImageButton mBtnPlayPause;
 
-
+    // seekbar callback
+    /*
+    private SeekBar seekBar;
+*/
     /*
     // 음악 재생 바 - MediaPlayer 오류
 
@@ -99,7 +104,10 @@ backgrond erorr
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        // content Seekbar 가져오기 - AucdioSevice java
+        /*
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+*/
         // 안드로이드 저장소 사용 - Marshmallow 이상 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -124,8 +132,9 @@ backgrond erorr
 
         mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
         appImage = (ImageView) findViewById(R.id.appImage);
+        /*
         nav_img = (ImageView) findViewById(R.id.nav_img);
-
+*/
 
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
         /*
@@ -165,16 +174,18 @@ backgrond erorr
 
     private void updateUI() {
         if (AudioApplication.getInstance().getServiceInterface().isPlaying()) {
-            mBtnPlayPause.setImageResource(R.drawable.pause);
+            mBtnPlayPause.setImageResource(R.drawable.ic_pause);
         } else {
-            mBtnPlayPause.setImageResource(R.drawable.play);
+            mBtnPlayPause.setImageResource(R.drawable.ic_play);
         }
         AudioAdapter.AudioItem audioItem = AudioApplication.getInstance().getServiceInterface().getAudioItem();
         if (audioItem != null) {
             Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), audioItem.mAlbumId);
-            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
-            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.mipmap.ic_launcher).into(mImgAlbumArt);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.mipmap.ic_launcher).into(appImage);
+            /* navigation
             Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(nav_img);
+            */
 
             mTxtTitle.setText(audioItem.mTitle);
             /*
@@ -182,7 +193,7 @@ backgrond erorr
             */
             //imageView1.setImageURI(mImgAlbumArt);
         } else {
-            mImgAlbumArt.setImageResource(R.drawable.intro);
+            mImgAlbumArt.setImageResource(R.mipmap.ic_launcher);
             mTxtTitle.setText("재생중인 음악이 없습니다.");
 /*
             mTxtTitle2.setText("재생중인 음악이 없습니다. ");
@@ -288,6 +299,8 @@ backgrond erorr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG);
+            toast.show();
             return true;
         }
 
@@ -300,19 +313,23 @@ backgrond erorr
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_music) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_playList) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_folder) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+        } else if (id == R.id.nav_settings) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG);
+            toast.show();
+        } else if (id == R.id.nav_info) {
+            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+            dlg.setIcon(R.mipmap.ic_launcher_round);
+            dlg.setTitle("Info");
+            dlg.setMessage("Off Player 1.2.1\n\nDeveloper - 11618nathan\n");
+            dlg.setPositiveButton("OK", null);
+            dlg.show();
+    }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
