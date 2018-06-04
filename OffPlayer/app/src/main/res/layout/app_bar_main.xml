@@ -28,7 +28,7 @@
                 android:layout_height="262dp"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
-                android:src="@drawable/intro"
+                android:src="@mipmap/ic_launcher"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
