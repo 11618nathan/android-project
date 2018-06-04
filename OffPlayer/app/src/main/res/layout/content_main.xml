@@ -52,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="bottom"
-        android:background="@android:color/darker_gray"
+        android:background="@color/colorAccent"
         android:foregroundGravity="bottom"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -65,7 +65,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/intro" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/txt_title"
@@ -77,26 +77,26 @@
             android:text="Sample Title"
             android:textColor="@android:color/black" />
 
+        <!-- res\values\string.xml -->
         <ImageButton
             android:id="@+id/btn_rewind"
+            android:src="@drawable/ic_rewind"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/btn_rewind"/>
+            android:background="?attr/selectableItemBackground"/>
 
         <ImageButton
             android:id="@+id/btn_play_pause"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/btn_play_pause" />
+            android:background="?attr/selectableItemBackground" />
 
         <ImageButton
             android:id="@+id/btn_forward"
+            android:src="@drawable/ic_forward"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/btn_forward"/>
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 
