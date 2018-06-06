@@ -12,36 +12,39 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.zip.DataFormatException;
 
 public class AudioAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
+
 
     public AudioAdapter(Context context, Cursor cursor) {
         super(context, cursor);
     }
 
+    // Cursor
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
         AudioItem audioItem = AudioItem.bindCursor(cursor);
         ((AudioViewHolder) viewHolder).setAudioItem(audioItem, cursor.getPosition());
     }
 
+
+    // ViewHolder 생성
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_audio, parent, false);
         return new AudioViewHolder(v);
     }
 
+    // Item class
     public static class AudioItem {
-        public long mId; // 오디오 고유 ID
-        public long mAlbumId; // 오디오 앨범아트 ID
+        public long mId; // ID
+        public long mAlbumId; // 앨범아트 ID
         public String mTitle; // 타이틀 정보
         public String mArtist; // 아티스트 정보
         public String mAlbum; // 앨범 정보
-        public long mDuration; // 재생시간
-        public String mDataPath; // 실제 데이터위치
+        public long mDuration; // 재생 시간
+        public String mDataPath; // 데이터 경로
 
         public static AudioItem bindCursor(Cursor cursor) {
             AudioItem audioItem = new AudioItem();
