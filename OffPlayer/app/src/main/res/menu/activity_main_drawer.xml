@@ -4,35 +4,33 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+        <!-- icon -->
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_music"
+            android:icon="@drawable/ic_menu_music"
+            android:title="Music" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_playList"
+            android:icon="@drawable/ic_menu_list"
+            android:title="Playlist" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_folder"
+            android:icon="@drawable/ic_menu_folder"
+            android:title="Repository" />
+
     </group>
 
-    <item android:title="Communicate">
+    <group android:checkableBehavior="single">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="Tools" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_menu_info"
+                android:title="Info" />
         </menu>
-    </item>
+    </group>
 
 </menu>
