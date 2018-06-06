@@ -40,9 +40,9 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
 
     private void updatePlayState(Context context, RemoteViews remoteViews) {
         if (AudioApplication.getInstance().getServiceInterface().isPlaying()) {
-            remoteViews.setImageViewResource(R.id.btn_play_pause, R.drawable.pause);
+            remoteViews.setImageViewResource(R.id.btn_play_pause, R.drawable.ic_pause);
         } else {
-            remoteViews.setImageViewResource(R.id.btn_play_pause, R.drawable.play);
+            remoteViews.setImageViewResource(R.id.btn_play_pause, R.drawable.ic_play);
         }
         String title = "재생중인 음악이 없습니다.";
         if (AudioApplication.getInstance().getServiceInterface().getAudioItem() != null) {
