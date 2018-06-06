@@ -6,7 +6,4 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="btn_rewind">《</string>
-    <string name="btn_play_pause">▶</string>
-    <string name="btn_forward">》</string>
 </resources>
