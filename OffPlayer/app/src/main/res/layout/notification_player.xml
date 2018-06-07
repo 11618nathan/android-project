@@ -27,21 +27,21 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@null"
-        android:src="@drawable/rewind"/>
+        android:src="@drawable/ic_rewind"/>
 
     <ImageButton
         android:id="@+id/btn_play_pause"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@null"
-        android:src="@drawable/play"/>
+        android:src="@drawable/ic_play"/>
 
     <ImageButton
         android:id="@+id/btn_forward"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@null"
-        android:src="@drawable/forward"/>
+        android:src="@drawable/ic_forward"/>
 
     <ImageButton
         android:id="@+id/btn_close"
@@ -49,5 +49,4 @@
         android:layout_height="40dp"
         android:background="@null"
         android:src="@drawable/ic_close"/>
-
 </LinearLayout>
