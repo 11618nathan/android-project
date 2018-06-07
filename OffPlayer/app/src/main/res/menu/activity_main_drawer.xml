@@ -20,17 +20,17 @@
 
     </group>
 
-    <group android:checkableBehavior="single">
+    <item android:title="Application">
         <menu>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_menu_settings"
-                android:title="Tools" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/ic_menu_info"
                 android:title="Info" />
         </menu>
-    </group>
+    </item>
 
 </menu>
