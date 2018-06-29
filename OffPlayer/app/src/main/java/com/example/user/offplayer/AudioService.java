@@ -12,25 +12,22 @@ import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.widget.SeekBar;
 import java.util.ArrayList;
+import android.content.IntentFilter;
+import android.os.Handler;
 
 public class AudioService extends Service {
     private final IBinder mBinder = new AudioServiceBinder();
 
     // 재생목록리스트
     private ArrayList<Long> mAudioIds = new ArrayList<>();
-
     private MediaPlayer mMediaPlayer;
-
-    //
+    // 재생 위치
     private boolean isPrepared;
 
-    // 재생 음원 위치
+    // 재생 멈춘 시점
     private int mCurrentPosition;
     private AudioAdapter.AudioItem mAudioItem;
     private NotificationPlayer mNotificationPlayer;
-
-    private SeekBar seekBar;
-
 
     public class AudioServiceBinder extends Binder {
         AudioService getService() {
@@ -77,31 +74,7 @@ public class AudioService extends Service {
         });
         mNotificationPlayer = new NotificationPlayer(this);
 
-        /*
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (seekBar.getMax() == progress) {
-                    isPrepared = false;
-                    mMediaPlayer.stop();
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                isPrepared = false;
-                mMediaPlayer.pause();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                isPrepared = true;
-                int mMove = seekBar.getProgress();
-                mMediaPlayer.seekTo(mMove);
-                mMediaPlayer.start();
-            }
-        });
-        */
+        // isPlaying() 오류 및 Viewfindlwy 오류
     }
 
     @Override
@@ -154,7 +127,6 @@ public class AudioService extends Service {
         }
     }
 
-    // 오디오 query
     private void queryAudioItem(int position) {
         mCurrentPosition = position;
         long audioId = mAudioIds.get(position);
@@ -184,7 +156,6 @@ public class AudioService extends Service {
     private void prepare() {
         try {
             mMediaPlayer.setDataSource(mAudioItem.mDataPath);
-            // 스트림 타입
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.prepareAsync();
         } catch (Exception e) {
@@ -198,7 +169,6 @@ public class AudioService extends Service {
         mMediaPlayer.reset();
     }
 
-    // playlist - service 저장
     public void setPlayList(ArrayList<Long> audioIds) {
         if (!mAudioIds.equals(audioIds)) {
             mAudioIds.clear();
