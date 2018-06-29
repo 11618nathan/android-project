@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 public class AudioAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
@@ -21,7 +24,7 @@ public class AudioAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHol
         super(context, cursor);
     }
 
-    // Cursor
+    // cursor
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
         AudioItem audioItem = AudioItem.bindCursor(cursor);
@@ -38,13 +41,13 @@ public class AudioAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHol
 
     // Item class
     public static class AudioItem {
-        public long mId; // ID
-        public long mAlbumId; // 앨범아트 ID
+        public long mId; // 오디오 고유 ID
+        public long mAlbumId; // 오디오 앨범아트 ID
         public String mTitle; // 타이틀 정보
         public String mArtist; // 아티스트 정보
         public String mAlbum; // 앨범 정보
-        public long mDuration; // 재생 시간
-        public String mDataPath; // 데이터 경로
+        public long mDuration; // 재생시간
+        public String mDataPath; // 실제 데이터위치
 
         public static AudioItem bindCursor(Cursor cursor) {
             AudioItem audioItem = new AudioItem();
