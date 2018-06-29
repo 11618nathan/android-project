@@ -50,42 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView nav_img;
 
     private TextView mTxtTitle;
-    private TextView nav_title;
-/*
-backgrond erorr
-    private TextView mTxtTitle2;
-*/
+
     private ImageButton mBtnPlayPause;
 
-    // seekbar callback
-    /*
-    private SeekBar seekBar;
-*/
-    /*
-    // 음악 재생 바 - MediaPlayer 오류
-
-    private SeekBar seekbar;
-    private Handler myHandler = new Handler();
-    boolean isPlaying = false;
-
-    private Runnable mRunnable;
-    private Handler mHandler;
-
-    private SeekBar seekBar;
-    private MediaPlayer mMediaPlayer;
-
-
-    // Seekbar 이동
-    class MyThread extends Thread {
-        @Override
-        public void run() { // 쓰레드가 시작되면 콜백되는 메서드
-            // 씨크바 막대기 조금씩 움직이기 (노래 끝날 때까지 반복)
-            while(AudioApplication.getInstance().getServiceInterface().isPlaying()) {
-                seekBar.setProgress(mMediaPlayer.getCurrentPosition());
-            }
-        }
-    }
-*/
     // UI 가져오기
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -94,19 +61,15 @@ backgrond erorr
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        // content Seekbar 가져오기 - AucdioSevice java
-        /*
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-*/
         // 안드로이드 저장소 사용 - Marshmallow 이상 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -132,10 +95,12 @@ backgrond erorr
         mImgAlbumArt = (ImageView) findViewById(R.id.img_albumart);
         appImage = (ImageView) findViewById(R.id.appImage);
         nav_img = (ImageView) findViewById(R.id.nav_img);
+
+
         mTxtTitle = (TextView) findViewById(R.id.txt_title);
-
-        nav_title = (TextView) findViewById(R.id.nav_title);
-
+        /*
+        mTxtTitle2 = (TextView) findViewById(R.id.txt_title2);
+        */
         mBtnPlayPause = (ImageButton) findViewById(R.id.btn_play_pause);
         findViewById(R.id.lin_miniplayer).setOnClickListener(this);
         findViewById(R.id.btn_rewind).setOnClickListener(this);
@@ -148,14 +113,14 @@ backgrond erorr
 
         // 네비게이션
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
     }
+
 
     private void registerBroadcast() {
         IntentFilter filter = new IntentFilter();
@@ -164,28 +129,29 @@ backgrond erorr
         registerReceiver(mBroadcastReceiver, filter);
     }
 
-    public void unregisterBroadcast(){
-        unregisterReceiver(mBroadcastReceiver);
-    }
+    public void unregisterBroadcast(){ unregisterReceiver(mBroadcastReceiver);}
+
 
     private void updateUI() {
-
         if (AudioApplication.getInstance().getServiceInterface().isPlaying()) {
             mBtnPlayPause.setImageResource(R.drawable.ic_pause);
         } else {
             mBtnPlayPause.setImageResource(R.drawable.ic_play);
         }
         AudioAdapter.AudioItem audioItem = AudioApplication.getInstance().getServiceInterface().getAudioItem();
-
         if (audioItem != null) {
             Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), audioItem.mAlbumId);
-            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.mipmap.ic_launcher).into(mImgAlbumArt);
-            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.mipmap.ic_launcher).into(appImage);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(mImgAlbumArt);
+            Picasso.with(getApplicationContext()).load(albumArtUri).error(R.drawable.intro).into(appImage);
 
             mTxtTitle.setText(audioItem.mTitle);
+            /*
+            mTxtTitle2.setText(audioItem.mTitle);
+            */
+            //imageView1.setImageURI(mImgAlbumArt);
 
         } else {
-            mImgAlbumArt.setImageResource(R.mipmap.ic_launcher);
+            mImgAlbumArt.setImageResource(R.drawable.intro);
             mTxtTitle.setText("재생중인 음악이 없습니다.");
 /*
             mTxtTitle2.setText("재생중인 음악이 없습니다. ");
@@ -213,11 +179,10 @@ backgrond erorr
                 String selection = MediaStore.Audio.Media.IS_MUSIC + " = 1";
                 //
                 String sortOrder = MediaStore.Audio.Media.TITLE + " COLLATE LOCALIZED ASC";
-                // Mdia Database 조회 컬럼 ID
                 return new CursorLoader(getApplicationContext(), uri, projection, selection, null, sortOrder);
             }
 
-            // 조회 리턴 - Cursor
+            // 조회 리턴
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) { mAdapter.swapCursor(data); }
 
@@ -280,58 +245,19 @@ backgrond erorr
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
-        /*
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.menu_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                /*
-                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                *//*
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                /*
-                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-                return false;
-            }
-        });
-        */
         return true;
     }
-/*
-    @Override
-    public boolean onQueryTextChange(String query) {
-        // Here is where we are going to implement the filter logic
-        return false;
-    }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        /*
+
         //noinspection SimplifiableIfStatement
+        /*
         if (id == R.id.action_settings) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG);
-            toast.show();
             return true;
         }
         */
