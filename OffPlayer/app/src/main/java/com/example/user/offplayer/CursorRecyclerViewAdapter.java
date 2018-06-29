@@ -16,7 +16,7 @@ package com.example.user.offplayer;
  * limitations under the License.
  *
  */
- 
+
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -39,7 +39,7 @@ import java.text.DateFormat;
 /**
  * Created by skyfishjy on 10/31/14.
  */
- 
+
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     private Context mContext;
