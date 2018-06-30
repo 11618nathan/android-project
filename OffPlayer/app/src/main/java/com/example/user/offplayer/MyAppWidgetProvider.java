@@ -1,5 +1,5 @@
 package com.example.user.offplayer;
-
+/*
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -73,4 +73,4 @@ public class MyAppWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
         }
     }
-}
+}*/
