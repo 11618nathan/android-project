@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TextView android:layout_height="wrap_content" android:text="도서명" android:id="@+id/tv_title" android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="end" android:textSize="25px" android:textStyle="bold"></TextView>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/relativeLayout1">
+        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:id="@+id/tv_writer" android:text="저자" android:textSize="15px"></TextView>
+        <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:text="주제" android:id="@+id/tv_subject" android:textSize="15px"></TextView>
+    </RelativeLayout>
+    
+</LinearLayout>
